@@ -4,103 +4,69 @@
     <meta charset="UTF-8">
     <title>Music Therapy | MINDEASE</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .mood-options { margin-bottom: 20px; }
+        .mood-btn {
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .active-mood { background-color: #2E7D32; font-weight: bold; }
+    </style>
 </head>
 <body>
 
 <div class="dashboard-card">
     <h1>Music Therapy 🎵</h1>
     <p>Select music based on your mood</p>
-    <h3>Select Your Mood 👇</h3>
+    
+    <div class="mood-options">
+        <h3>Select Your Mood 👇</h3>
+        <a href="{{ url_for('music', mood='happy') }}" class="mood-btn {% if current_mood == 'happy' %}active-mood{% endif %}">😊 Happy</a>
+        <a href="{{ url_for('music', mood='sad') }}" class="mood-btn {% if current_mood == 'sad' %}active-mood{% endif %}">😢 Sad</a>
+        <a href="{{ url_for('music', mood='stressed') }}" class="mood-btn {% if current_mood == 'stressed' %}active-mood{% endif %}">😣 Stressed</a>
+        <a href="{{ url_for('music', mood='angry') }}" class="mood-btn {% if current_mood == 'angry' %}active-mood{% endif %}">😤 Angry</a>
+    </div>
 
-    <button onclick="getMusic('happy')">😊 Happy</button>
-    <button onclick="getMusic('sad')">😢 Sad</button>
-    <button onclick="getMusic('stressed')">😣 Stressed</button>
+    <hr>
 
-    <div id="musicResult"></div>
+    <h3 style="text-transform: capitalize;">
+    🎧 {{ current_mood }} Playlists
+    </h3>
 
-    <!-- Calm Music -->
-    <h3>🌿 Calm & Stress Relief</h3>
-    <iframe style="border-radius:12px"
-        src="https://open.spotify.com/embed/playlist/37i9dQZF1DX3rxVfibe1L0"
-        width="100%" height="380"
-        frameborder="0"
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-        loading="lazy">
-    </iframe>
+{% for category, playlist in playlists.items() %}
 
-    <br><br>
+    <div class="playlist-card">
 
-    <!-- Focus Music -->
-    <h3>🎯 Focus & Study</h3>
-    <iframe style="border-radius:12px"
-        src="https://open.spotify.com/embed/playlist/37i9dQZF1DX4sWSpwq3LiO"
-        width="100%" height="380"
-        frameborder="0"
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-        loading="lazy">
-    </iframe>
+        <h4>{{ category }}</h4>
 
-    <br><br>
+        <iframe
+            style="border-radius:12px"
+            src="https://open.spotify.com/embed/playlist/{{ playlist }}"
+            width="100%"
+            height="352"
+            frameborder="0"
+            allowfullscreen=""
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            loading="lazy">
+        </iframe>
 
-    <!-- Uplifting Music -->
-    <h3>🌞 Uplifting & Positive</h3>
-    <iframe style="border-radius:12px"
-        src="https://open.spotify.com/embed/playlist/37i9dQZF1DXdPec7aLTmlC"
-        width="100%" height="380"
-        frameborder="0"
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-        loading="lazy">
-    </iframe>
+    </div>
 
-    <br><br>
+<br>
 
-    <!-- Devotional / Spiritual -->
-    <h3>🙏 Devotional & Spiritual</h3>
-    <iframe style="border-radius:12px"
-        src="https://open.spotify.com/playlist/7eiJ7L7ptVnTccJMNW1sXf?si=x1zjDVPcQXKW8NybTIrzKw&pi=VofAS1dCQZ-R1"
-        width="100%" height="380"
-        frameborder="0"
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-        loading="lazy">
-    </iframe>
-
-    <br><br>
-
-    <!-- Frank Ocean Vibe -->
-    <h3>🎧 Frank Ocean Vibe (R&B / Chill)</h3>
-    <iframe style="border-radius:12px"
-        src="https://open.spotify.com/embed/playlist/37i9dQZF1DX4SBhb3fqCJd"
-        width="100%" height="380"
-        frameborder="0"
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-        loading="lazy">
-    </iframe>
-
-    <br><br>
+{% endfor %}
 
     <a href="/dashboard">
-        <button class="dash-btn logout-btn">Back</button>
+        <button class="dash-btn logout-btn">Back to Dashboard</button>
     </a>
 </div>
-<script>
-function getMusic(mood) {
-    fetch("/get_music", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ mood: mood })
-    })
-    .then(res => res.json())
-    .then(data => {
-        let div = document.getElementById("musicResult");
-        div.innerHTML = "<h4>Recommended:</h4>";
 
-        data.songs.forEach(song => {
-            div.innerHTML += "<p>" + song + "</p>";
-        });
-    });
-}
-</script>
 </body>
 </html>

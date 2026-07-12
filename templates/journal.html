@@ -3,67 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <title>Journal | MINDEASE</title>
-
-    <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-
-    <!-- CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
-<div class="journal-wrapper">
+<form action="/save_journal" method="POST">
+    <div class="journal-wrapper">
+        <div class="notebook">
+            <div class="page left-page">
+                <h2>My Thoughts ✍️</h2>
+                <textarea name="leftText" placeholder="Start writing here..."></textarea>
+            </div>
 
-    <div class="notebook">
+            <div class="spine"></div>
 
-        <!-- LEFT PAGE -->
-        <div class="page left-page">
-            <h2>My Thoughts ✍️</h2>
-
-            <p class="prompt">
-                Write freely. No judgment. This space is yours.
-            </p>
-
-            <textarea id="leftText" placeholder="Start writing here..."></textarea>
+            <div class="page right-page">
+                <h2>Reflections 🌿</h2>
+                <textarea name="rightText" placeholder="What did you learn today?"></textarea>
+            </div>
         </div>
 
-        <!-- CENTER SPINE -->
-        <div class="spine"></div>
-
-        <!-- RIGHT PAGE -->
-        <div class="page right-page">
-            <h2>Reflections 🌿</h2>
-
-            <textarea id="rightText" placeholder="What did you learn today?"></textarea>
+        <div class="journal-actions">
+            <button type="submit" class="save-btn">Save Entry</button>
+            <a href="/dashboard" class="back-btn">Back</a>
         </div>
-
     </div>
+</form>
 
-    <div class="journal-actions">
-        <button class="save-btn" onclick="saveJournal()">Save</button>
-        <a href="/dashboard"><button class="back-btn">Back</button></a>
-    </div>
-
-</div>
-<script>
-function saveJournal() {
-    let left = document.getElementById("leftText").value;
-    let right = document.getElementById("rightText").value;
-
-    let fullText = left + " | " + right;
-
-    fetch("/save_journal", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ text: fullText })
-    })
-    .then(res => res.json())
-    .then(data => {
-        alert(data.message);
-    });
-}
-</script>
 </body>
 </html>

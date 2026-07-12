@@ -1,32 +1,194 @@
-<div class="page-wrapper">
-    <h1 class="page-title">Mood Tracker</h1>
-    <p class="page-subtitle">
-        How are you feeling today?
-    </p>
 
-    <div class="card-grid">
-       <div class="soft-card" onclick="sendMood('happy')">😊 Happy</div>
-       <div class="soft-card" onclick="sendMood('calm')">😌 Calm</div>
-       <div class="soft-card" onclick="sendMood('sad')">😔 Sad</div>
-       <div class="soft-card" onclick="sendMood('stressed')">😫 Stressed</div>
-    </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindEase - How are you?</title>
 
-    <div class="section-cta">
-        <a href="/dashboard"><button>Back to Dashboard</button></a>
-    </div>
+    <style>
+        body{
+
+            background:
+            linear-gradient(
+                135deg,
+                #dff6ff,
+                #c8f0e8
+            );
+            height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+        }
+        .mood-container{
+            text-align:center;
+
+            background:rgba(255,255,255,0.75);
+
+            backdrop-filter:blur(20px);
+
+            padding:60px;
+
+            border-radius:35px;
+
+            box-shadow:
+            0 25px 60px rgba(0,0,0,0.12);
+
+            width:1100px;
+        }
+        
+
+    
+
+
+        
+
+        .mood-grid {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .mood-bubble {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: none;
+            background: white;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .happy{
+            border-top: 6px solid #FFD54F;
+        }
+
+        .angry{
+            border-top: 6px solid #EF5350;
+        }
+
+        .sad{
+            border-top: 6px solid #64B5F6;
+        }
+
+        .stressed{
+            border-top: 6px solid #BA68C8;
+        }
+
+        .mood-bubble:hover{
+            transform:translateY(-10px) scale(1.08);
+
+            box-shadow:
+            0 20px 40px rgba(0,0,0,0.15);
+
+            transition:0.3s;
+        }
+
+        .happy:hover{
+            background:#FFF3B0;
+        }
+
+
+        .angry:hover{
+            background:#FFD6D6;
+        }
+
+        .sad:hover{
+            background:#DDEBFF;
+       }
+
+        .stressed:hover{
+            background:#F3D9FF;
+     }
+
+        .emoji {
+            font-size: 50px;
+            margin-bottom: 10px;
+        }
+
+        .mood-bubble span {
+            font-weight: bold;
+            color: #444;
+        }
+
+        .btn-back {
+            margin-top: 30px;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            background: #00796b;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-back:hover {
+            background: #004d40;
+        }
+
+        h1 {
+            color: #006064;
+        }
+
+        p {
+            color: #00838f;
+        }
+    </style>
+</head>
+
+<body id="mood-body">
+
+<div class="mood-container">
+
+    <h1>How are you feeling, {{ name }}?</h1>
+
+    <p>Choose a mood</p>
+
+    <form action="/save_mood" method="POST">
+
+        <div class="mood-grid">
+
+            <button type="submit" name="mood" value="Happy" class="mood-bubble happy">
+                <div class="emoji">😊</div>
+                <span>Happy</span>
+            </button>
+
+            <button type="submit" name="mood" value="Angry" class="mood-bubble angry">
+                <div class="emoji">😡</div>
+                <span>Angry</span>
+            </button>
+
+            <button type="submit" name="mood" value="Sad" class="mood-bubble sad">
+                <div class="emoji">🥺</div>
+                <span>Sad</span>
+            </button>
+
+            <button type="submit" name="mood" value="Stressed" class="mood-bubble stressed">
+                <div class="emoji">😫</div>
+                <span>Stressed</span>
+            </button>
+
+        </div>
+
+    </form>
+
+    <br>
+
+    <a href="/dashboard">
+        <button class="btn-back">
+            Back to Dashboard
+        </button>
+    </a>
+
 </div>
-<script>
-function sendMood(mood) {
-    fetch("/save_mood", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ mood: mood })
-    })
-    .then(res => res.json())
-    .then(data => {
-        alert(data.message);
-    });
-}
-</script>
+
+</body>
+</html>
+
