@@ -14,7 +14,7 @@ from flask import Flask, render_template, request, redirect, url_for, jsonify
 from datetime import datetime
 
 app = Flask(__name__)
-app.secret_key = "any_random_string_here"
+app.secret_key = os.environ.get("SECRET_KEY")
 
 @app.route("/check")
 def check():
